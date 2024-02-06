@@ -1,0 +1,56 @@
+{
+  "name": "my-app",
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "my-app/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nx/esbuild:esbuild",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "platform": "node",
+        "outputPath": "dist/my-app",
+        "format": ["esm"],
+        "bundle": false,
+        "main": "my-app/src/main.ts",
+        "tsConfig": "my-app/tsconfig.app.json",
+        "assets": ["my-app/src/assets"],
+        "generatePackageJson": true,
+        "esbuildOptions": {
+          "sourcemap": true,
+          "outExtension": {
+            ".js": ".js"
+          }
+        }
+      },
+      "configurations": {
+        "development": {},
+        "production": {
+          "esbuildOptions": {
+            "sourcemap": false,
+            "outExtension": {
+              ".js": ".js"
+            }
+          }
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "my-app:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "my-app:build:development"
+        },
+        "production": {
+          "buildTarget": "my-app:build:production"
+        }
+      }
+    }
+  },
+  "tags": ["type:app"]
+}
